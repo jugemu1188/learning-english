@@ -1,0 +1,7 @@
+{
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\Sysnative\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "editor.renderWhitespace": "boundary",
+  "window.zoomLevel": 1,
+  "workbench.iconTheme": "vscode-icons",
+  "editor.tabSize": 2
+}
