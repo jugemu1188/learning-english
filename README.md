@@ -1,6 +1,6 @@
 # adjective_wp
 
-> A Vue.js project
+> It is a page that you can learn word order of adjective made with Vue.js
 
 ## Build Setup
 
