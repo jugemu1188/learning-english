@@ -16,7 +16,9 @@
     "font-awesome": "^4.7.0",
     "i18next": "^9.0.0",
     "jquery": "^3.2.1",
+    "loglevel": "^1.5.0",
     "popper.js": "^1.12.5",
+    "sleep-async": "^1.0.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0"
   },
