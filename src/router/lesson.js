@@ -1,5 +1,5 @@
 let anime = require('animejs/anime.min.js')
-import AdjectiveUtil from './adjective'
+
 
 $(function () {
   var _tbodyObj = $('table.adjective_order tbody')
@@ -8,23 +8,12 @@ $(function () {
   var _seq
   var _fonts = ['Dawning of a New Day', 'Italianno', 'Yesteryear', 'Alex Brush', 'Caveat', 'Damion', 'Pacifico']
   var randomFontName
+  var answerSentenceObj = $('.answer > .sentence')
 
-  function shuffle (array) {
-    var n = array.length
-    let t
-    let i
 
-    while (n) {
-      i = Math.floor(Math.random() * n--)
-      t = array[n]
-      array[n] = array[i]
-      array[i] = t
-    }
-
-    return array
-  }
 
   var _refresh = function () {
+    /*
     _selectList = []
     randomFontName = _fonts[Math.floor(Math.random() * _fonts.length)]
     $('button', _tbodyObj).remove()
@@ -58,6 +47,7 @@ $(function () {
 
     var drawList = shuffle(randomList)
     _putButton(drawList, pObj)
+    */
   }
 
   var _addSpanedWord = function (sentence, parentObj) {
@@ -189,12 +179,22 @@ $(function () {
   }
 
   var _refreshYourChoice = function () {
+    answerSentenceObj.empty()
     $('button', _tbodyObj).remove()
     $('button', _tfootObj).remove()
-    $.each(_selectList, function (idx) {
-      $('<button type="button" class="btn btn-raised btn-xs btn-success"></button>').text(this.word).appendTo($('tr:not(.ignore):eq(' + idx + ') td:last', _tbodyObj))
+    let adjObj = AdjectiveUtil.getInstance()
+    _seq = adjObj.getSeq()
+    let numOfPlaceHolder = _seq.list.length
+    _selectList.forEach((elm, index) => {
+      $('<button type="button" class="btn btn-raised btn-xs btn-success"></button>')
+      .text(elm.word)
+      .appendTo(answerSentenceObj)
     })
-    $('<button type="button" class="btn btn-xs btn-success" disabled></button>').text(_seq.noun).appendTo($('tr td:last', _tfootObj))
+    for (let i = numOfPlaceHolder - _selectList.length; i > 0; i--) {
+      $('<button type="button" class="btn btn-xs btn-warning btn-raised fake" disabled >&nbsp;</button>').appendTo(answerSentenceObj)
+    }
+
+    $('<button type="button" class="btn btn-xs btn-primary btn-raised " disabled ></button>').text(_seq.noun).appendTo(answerSentenceObj)
   }
 
   $('body').on('click', 'p.speech button.next_question', function () {

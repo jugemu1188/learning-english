@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import './lesson'
+import Adjective from '@/components/Adjective'
 
 Vue.use(Router)
 
@@ -9,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Adjective',
+      component: Adjective
     }
   ]
 })

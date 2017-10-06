@@ -1,39 +1,48 @@
-var numeral = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
-var opinion = ['beautiful', 'unusual', 'lovely']
-var size = {
+const numeral = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+const opinion = ['beautiful', 'unusual', 'lovely']
+const size = {
   big: ['huge', 'big', 'large', 'enormous'],
   small: ['small', 'little', 'slim', 'enormous']
 }
-var shape = ['round', 'square', 'rectangular']
-var age = {
+const shape = ['round', 'square', 'rectangular']
+const age = {
   animal: ['young', 'old', 'baby'],
   object: ['new', 'old']
 }
-var color = ['black', 'gray', 'blue', 'brown', 'purple', 'red', 'green', 'pink', 'yellow', 'orange']
-var origin = ['German', 'Japanese', 'Turkish', 'American', 'Asian', 'Chadian', 'Colombian']
-var material = ['metal', 'wooden', 'plastic', 'silver', 'gold', 'cotton', 'paper']
-var animal = {
+const color = ['black', 'gray', 'blue', 'brown', 'purple', 'red', 'green', 'pink', 'yellow', 'orange']
+const origin = ['German', 'Japanese', 'Turkish', 'American', 'Asian', 'Chadian', 'Colombian']
+const material = ['metal', 'wooden', 'plastic', 'silver', 'gold', 'cotton', 'paper']
+const animal = {
   big: ['elephant', 'bird', 'spider', 'whale', 'hippo', 'giraffe'],
   small: ['raccoon', 'bird', 'turtle', 'rabbit', 'frog', 'dove']
 }
-var objects = ['bag', 'Ruck sack', 'Luggage']
+const objects = ['bag', 'Ruck sack', 'Luggage']
 
 const IGNORE_CATEGORIES = ['Determiner', 'Opinion', 'Size', 'Shape', 'Age', 'Color', 'Origin', 'Material']
+
+var single
 
 export default class AdjectiveUtil {
 
   constructor (category, word) {
-    this.seq = {
-      list: [],
-      noun: null,
-      toString: function () {
-        var arr = []
-        for (var i = 0; i < this.list.length; i++) {
-          arr.push(this.list[i].word)
-        }
-        return arr.join(' ')
-      }
+    this.list = []
+    this.selectList = []
+    this.noun = null
+  }
+
+  static shuffle (array) {
+    var n = array.length
+    let t
+    let i
+
+    while (n) {
+      i = Math.floor(Math.random() * n--)
+      t = array[n]
+      array[n] = array[i]
+      array[i] = t
     }
+
+    return array
   }
 
   static rnd (arr) {
@@ -43,9 +52,9 @@ export default class AdjectiveUtil {
   ignoreCategory () {
     let arr = []
     Object.assign(arr, IGNORE_CATEGORIES)
-    for (var i = 0; i < this.seq.list.length; i++) {
+    for (var i = 0; i < this.list.length; i++) {
       for (var j = 0; j < arr.length; j++) {
-        if (this.seq.list[i].category === arr[j]) {
+        if (this.list[i].category === arr[j]) {
           arr.splice(j, 1)
           break
         }
@@ -54,16 +63,13 @@ export default class AdjectiveUtil {
     return arr
   }
 
-  getSeq () {
-    return this.seq
-  }
-
   put (category, word) {
     if (category === 'Noun') {
-      this.seq.noun = word
+      this.noun = word
     } else {
-      this.seq.list.push({
+      this.list.push({
         category: category,
+        isShowing: true,
         word: word
       })
     }
@@ -107,26 +113,32 @@ export default class AdjectiveUtil {
   }
 
   static create () {
-    let obj = new AdjectiveUtil()
+    single = new AdjectiveUtil()
     switch (Math.floor(Math.random() * 3)) {
       case 0:
-        obj.setPattern00()
+        single.setPattern00()
         break
       case 1:
-        obj.setPattern01()
+        single.setPattern01()
         break
       case 2:
-        obj.setTonguetwisters01()
+        single.setTonguetwisters01()
         break
     }
-    console.log('created', obj)
-    return obj
+    let clonedList = JSON.parse(JSON.stringify(single.list))
+    single.shuffled = AdjectiveUtil.shuffle(clonedList)
+    return single
   }
 
   static create00 () {
-    let obj = new AdjectiveUtil()
-    obj.setPattern00()
-    return obj
+    single = new AdjectiveUtil()
+    single.setPattern00()
+    return single
   }
+
+  static getInstance () {
+    return single
+  }
+
 }
 
