@@ -33,11 +33,6 @@
 
 <script>
 require('jquery')
-require('popper.js/dist/umd/popper.min.js')
-require('bootstrap-material-design/dist/css/bootstrap-material-design.min.css')
-require('bootstrap-material-design/dist/js/bootstrap-material-design.min.js')
-require('font-awesome/css/font-awesome.css')
-// var i18next = require('i18next/dist/umd/i18next.min.js')
 
 import Speech from './Speech'
 import AdjectiveFigure from './AdjectiveFigure'
@@ -57,6 +52,7 @@ export default {
       msg: '形容詞',
       exerciseResult: {
         isCorrect: false,
+        correctWords: [],
         yourWords: [],
         correctSentence: '',
         noun: ''
