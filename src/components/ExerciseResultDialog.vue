@@ -3,7 +3,10 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title">{{ result.isCorrect ? '正解' : '不正解' }}</h1>
+          <h1 class="modal-title">
+            <span v-if="result.isCorrect" class="text-primary"><i class="fa fa-circle-o" aria-hidden="true"></i>正解</span>
+            <span v-if="!result.isCorrect" class="text-danger"><i class="fa fa-times" aria-hidden="true"></i>不正解</span>
+          </h1>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         </div>
         <div class="modal-body">
@@ -11,7 +14,16 @@
             <h3 class="text-success">正しい回答
               <button type='button' class='btn btn-raised btn-default' @click="playCorrectAnswer">再生</button>
             </h3>
-            <p class="correct answer">{{result.correctSentence}}</p>
+            <p class="correct answer">
+              <ruby v-for="w in result.correctWords">
+                <rb>{{w.word + ' '}}</rb>
+                <rt>{{w.category}}</rt>
+              </ruby>
+              <ruby>
+                <rb>{{result.noun + '.'}}</rb>
+                <rt>Noun</rt>
+              </ruby>
+            </p>
           </section>
           <hr>
           <section class="your answer">
@@ -19,7 +31,7 @@
               <button type='button' class='btn btn-raised btn-default' @click="playYourAnswer">再生</button>
             </h3>
             <p class="your answer">
-              <span v-for="w in result.yourWords" :class="{ wrong: w.wrong }">{{w.word + ' '}}</span>
+              <span v-for="w in result.yourWords" :class="{ 'text-danger': w.wrong }">{{w.word + ' '}}</span>
               <span>{{result.noun}}.</span>
             </p>
           </section>
@@ -53,6 +65,10 @@ export default {
       correctSentence: {
         type: String
       },
+      correctWords: {
+        type: Array,
+        default: []
+      },
       yourWords: {
         type: Array,
         default: []
@@ -85,15 +101,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @import "../assets/scss/_mixins.scss";
+  @import "../assets/scss/_variables.scss";
   section {
     text-align: left;
   }
   .modal-header {
     text-align: center;
   }
-  .your.answer {
-    .wrong {
-      color: red;
+  .answer {
+    span, ruby {
+      font-size: 1rem;
+      @include screen(map-get($breakpoints, sm), map-get($breakpoints, md)) {
+        font-size: 1.2rem;
+      }
+      @include screen(map-get($breakpoints, md), map-get($breakpoints, lg)) {
+        font-size: 1.6rem;
+      }
+      @include min-screen(map-get($breakpoints, lg)) {
+        font-size: 2.2rem;
+      }
     }
   }
 </style>

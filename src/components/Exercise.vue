@@ -1,7 +1,10 @@
 <template>
   <div class="alert alert-success" role="alert">
     <h4 class="alert-heading">練習問題</h4>
-    <p>次の語句を正しい順番に並べ替えなさい</p>
+    <p>
+      <i class="fa fa-question-circle" aria-hidden="true"></i>
+      次の語句を正しい順番に並べ替えなさい
+    </p>
     <hr>
     <section class="question">
       <p class="speech">
@@ -22,16 +25,14 @@
 
 <script>
 require('jquery')
-require('popper.js/dist/umd/popper.min.js')
-require('bootstrap-material-design/dist/css/bootstrap-material-design.min.css')
-require('bootstrap-material-design/dist/js/bootstrap-material-design.min.js')
-require('font-awesome/css/font-awesome.css')
+
 import AdjectiveUtil from '@/router/adjective'
 import SpeechUtil from '@/router/speech'
 
 function createCompleteMessage (result) {
   let ret = {
     isCorrect: true,
+    correctWords: [],
     yourWords: [],
     correctSentence: '',
     noun: ''
@@ -49,6 +50,10 @@ function createCompleteMessage (result) {
     ret.yourWords.push(o)
   })
   result.list.forEach((elm, idx) => {
+    ret.correctWords.push({
+      word: elm.word,
+      category: elm.category
+    })
     ret.correctSentence += elm.word + ' '
   })
   ret.correctSentence += result.noun + '.'

@@ -14,7 +14,6 @@
     "animejs": "^2.0.2",
     "bootstrap-material-design": "^4.0.0-beta.3",
     "font-awesome": "^4.7.0",
-    "i18next": "^9.0.0",
     "jquery": "^3.2.1",
     "loglevel": "^1.5.0",
     "popper.js": "^1.12.5",
