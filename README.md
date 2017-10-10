@@ -6,9 +6,11 @@
 
 ``` bash
 # install dependencies
+# インストール方法
 npm install
 
 # serve with hot reload at localhost:8080
+# 開発向けローカルサーバーをポート8080で起動(ソースコードを変更すると反映した状態でブラウザがリロードされます)
 npm run dev
 
 # build for production with minification

@@ -1,7 +1,7 @@
 {
-  "name": "adjective_wp",
+  "name": "learn_english_adjective_order",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Order of Adjectives in English",
   "author": "",
   "private": true,
   "scripts": {

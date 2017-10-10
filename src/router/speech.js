@@ -26,6 +26,7 @@ export default class SpeechUtil {
     this.rec = null
     this.isRunnningRecognition = false
     this.isLoopRequired = false
+    this.hasRecognitionResult = false
     this.callbackOnRecognitionResult = null
     var SpRec = null
     var SpGrm = null
@@ -66,6 +67,7 @@ export default class SpeechUtil {
     }
 
     this.rec.onresult = function (event) {
+      this.hasRecognitionResult = true
       var rs = event.results
       if (self.callbackOnRecognitionResult) {
         self.callbackOnRecognitionResult(createRecognitionResult(rs))
@@ -73,22 +75,27 @@ export default class SpeechUtil {
     }
     this.rec.onend = function (event) {
       self.isRunnningRecognition = false
-      log.info('end...')
-      if (self.isLoopRequired) {
+      log.info('end...', self.isLoopRequired, self.hasRecognitionResult)
+      if (self.isLoopRequired && self.hasRecognitionResult) {
         self.isRunnningRecognition = true
         self.rec.start()
       } else {
-        self.callbackOnRecognitionResult({
-          status: 'end'
-        })
+        if (self.callbackOnRecognitionResult) {
+          self.callbackOnRecognitionResult({
+            status: 'end'
+          })
+        }
       }
     }
     this.rec.onerr = function (event) {
-      self.callbackOnRecognitionResult({
-        status: 'error'
-      })
+      if (self.callbackOnRecognitionResult) {
+        self.callbackOnRecognitionResult({
+          status: 'error'
+        })
+      }
     }
     this.rec.onstart = function (event) {
+      this.hasRecognitionResult = false
       self.isRunnningRecognition = true
       log.info('start...')
     }

@@ -95,8 +95,10 @@ export default {
         SpeechUtil.getInstance().start(function (result) {
           if (result.status === 'end') {
             self.status = '停止状態'
+            self.useSpeechRecognition = false
           } else if (result.status === 'error') {
             self.status = 'エラー状態'
+            self.useSpeechRecognition = false
           } else {
             let sentendList = []
             self.status = '認識成功'
@@ -122,14 +124,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h1,
-h2 {
-  font-weight: normal;
-}
-
-a {
-  color: #42b983;
-}
 .card-body, .card-footer {
   padding: 10px;
 }
