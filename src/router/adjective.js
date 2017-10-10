@@ -13,7 +13,7 @@ const color = ['black', 'gray', 'blue', 'brown', 'purple', 'red', 'green', 'pink
 const origin = ['German', 'Japanese', 'Turkish', 'American', 'Asian', 'Chadian', 'Colombian']
 const material = ['metal', 'wooden', 'plastic', 'silver', 'gold', 'cotton', 'paper']
 const animal = {
-  big: ['elephant', 'bird', 'spider', 'whale', 'hippo', 'giraffe'],
+  big: ['elephant', 'bird', 'spider', 'whale', 'hippo', 'giraffe', 'bear'],
   small: ['raccoon', 'bird', 'turtle', 'rabbit', 'frog', 'dove']
 }
 const objects = ['bag', 'Ruck sack', 'Luggage']
@@ -138,6 +138,24 @@ export default class AdjectiveUtil {
 
   static getInstance () {
     return single
+  }
+
+  static getWords () {
+    let arr = ['The', 'A'].concat(numeral)
+    arr = arr.concat(opinion)
+    arr = arr.concat(size.big)
+    arr = arr.concat(size.small)
+    arr = arr.concat(shape)
+    arr = arr.concat(age.animal)
+    arr = arr.concat(age.object)
+    arr = arr.concat(color)
+    arr = arr.concat(origin)
+    arr = arr.concat(material)
+    arr = arr.concat(animal.big)
+    arr = arr.concat(animal.small)
+    arr = arr.concat(objects)
+
+    return arr
   }
 
 }

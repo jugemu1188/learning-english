@@ -16,11 +16,11 @@
             </h3>
             <p class="correct answer">
               <ruby v-for="w in result.correctWords">
-                <rb>{{w.word + ' '}}</rb>
+                {{w.word + ' '}}
                 <rt>{{w.category}}</rt>
               </ruby>
               <ruby>
-                <rb>{{result.noun + '.'}}</rb>
+                {{result.noun + '.'}}
                 <rt>Noun</rt>
               </ruby>
             </p>
@@ -103,6 +103,9 @@ export default {
 <style scoped lang="scss">
   @import "../assets/scss/_mixins.scss";
   @import "../assets/scss/_variables.scss";
+  ruby {
+    margin-right: 0.5em;
+  }
   section {
     text-align: left;
   }

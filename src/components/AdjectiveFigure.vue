@@ -17,44 +17,44 @@
         </tr>
         <tr class='Opinion'>
           <td>2</td>
-          <td>意見・感想・評価 （
-            <span class='prefix'>op</span>inion）</td>
+          <td>意見・感想<span class='hidden-lgsm'>・評価</span> （
+            <span class='prefix text-danger'>op</span>inion）</td>
           <td>lovely, beautiful</td>
         </tr>
         <tr class='Size'>
           <td>3</td>
           <td>大きさ（
-            <span class='prefix'>s</span>ize）</td>
+            <span class='prefix text-danger'>s</span>ize）</td>
           <td>big, small, tall</td>
         </tr>
         <tr class='Shape'>
           <td>4</td>
           <td>形（
-            <span class='prefix'>sh</span>ape）</td>
+            <span class='prefix text-danger'>sh</span>ape）</td>
           <td>triangular, square</td>
         </tr>
         <tr class='Age'>
           <td>5</td>
           <td>新しさ・古さ（
-            <span class='prefix'>a</span>ge）</td>
+            <span class='prefix text-danger'>a</span>ge）</td>
           <td>young, old, new</td>
         </tr>
         <tr class='Color'>
           <td>6</td>
           <td>色（
-            <span class='prefix'>c</span>olor）</td>
+            <span class='prefix text-danger'>c</span>olor）</td>
           <td>blue, white, yellow, black</td>
         </tr>
         <tr class='Origin'>
           <td>7</td>
           <td>所属（
-            <span class='prefix'>o</span>rigin）</td>
-          <td>Japanese, European, Buddhist</td>
+            <span class='prefix text-danger'>o</span>rigin）</td>
+          <td>Japanese, European<span class='hidden-lgsm'>, Buddhist</span></td>
         </tr>
         <tr class='Material'>
           <td>8</td>
           <td>素材（
-            <span class='prefix'>m</span>aterials）</td>
+            <span class='prefix text-danger'>m</span>aterials）</td>
           <td>silk, cotton, leather</td>
         </tr>
       </tbody>
@@ -74,13 +74,15 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
+  @import "../assets/scss/_mixins.scss";
+  @import "../assets/scss/_variables.scss";
+
   table.adjective_order {
     button {
       margin: 0;
     }
     span.prefix {
-      color: red;
       font-weight: bold;
     }
     tr.ignore {
@@ -94,4 +96,13 @@
       background-size: 15px 15px;
     }
   }
+  .hidden-lgsm {
+    display: inline-block;
+  }
+  @media screen and (min-width: map-get($breakpoints, lg)) and (max-width: 1120px) {
+    .hidden-lgsm {
+      display: none;
+    }
+  }
+
 </style>

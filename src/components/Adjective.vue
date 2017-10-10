@@ -10,13 +10,11 @@
       <div class="col-lg-6">
 
         <div class="alert alert-info text-left" role="alert">
-          <p>日本語では形容詞の順番は気にしませんが、</p>
-          <p>英語ではだいたいの語順があります</p>
-          <hr>
-          <p class="mb-0">表1.の赤字部分をとってOPSHACOM オプシャコムと覚えます</p>
+          <p>日本語では形容詞の順番は気にしませんが、英語ではだいたいの語順があります</p>
+          <p>表1.の<span class='text-danger'>赤字部分</span>をとってOPSHACOM オプシャコムと覚えます</p>
         </div>
 
-        <Speech></Speech>
+        <Speech v-on:onRecognized=acceptSentence></Speech>
 
       </div>
       <div class="col-lg-6">
@@ -24,7 +22,7 @@
       </div>
     </div>
 
-    <Exercise v-on:completed="openDialog"></Exercise>
+    <Exercise v-on:completed="openDialog" :acceptSentenceList="acceptSentenceList"></Exercise>
 
     <ExerciseResultDialog :result="exerciseResult"></ExerciseResultDialog>
 
@@ -50,6 +48,7 @@ export default {
   data: function () {
     return {
       msg: '形容詞',
+      acceptSentenceList: [],
       exerciseResult: {
         isCorrect: false,
         correctWords: [],
@@ -63,6 +62,9 @@ export default {
     openDialog: function (result) {
       this.exerciseResult = result
       $('#exercise-result-dialog').modal('toggle')
+    },
+    acceptSentence: function (saidList) {
+      this.acceptSentenceList = saidList
     }
   }
 }
@@ -71,10 +73,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-h1,
-h2 {
-  font-weight: normal;
-}
 
+.row {
+  margin: 0px;
+}
 
 </style>

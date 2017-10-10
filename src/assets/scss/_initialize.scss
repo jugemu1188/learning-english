@@ -1,0 +1,16 @@
+// Initialize
+//
+@import "./_variables.scss";
+@import "./_mixins.scss";
+
+@include min-screen(map-get($breakpoints, sm)) {
+  .jumbotron {
+    padding: 2.5rem 1.3rem;
+  }
+}
+
+i {
+  &.fa {
+    margin-right: 3px;
+  }
+}

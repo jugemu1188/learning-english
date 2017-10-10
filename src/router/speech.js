@@ -1,14 +1,32 @@
+import AdjectiveUtil from './adjective'
 let sleep = require('sleep-async/sleep-async')()
 var log = require('loglevel')
 log.setLevel('info')
 let single = null
 
+function createRecognitionResult (rs) {
+  let result = {
+    status: 'success',
+    said_list: []
+  }
+  for (var i = 0; i < rs.length; i++) {
+    for (var j = 0; j < rs[i].length; j++) {
+      result.said_list.push(rs[i][j])
+    }
+  }
+
+  return result
+}
+
 export default class SpeechUtil {
 
   constructor (lang) {
+    let self = this
     this.voice = SpeechUtil.getFirstVoice(lang)
     this.rec = null
-    this.isRunning = false
+    this.isRunnningRecognition = false
+    this.isLoopRequired = false
+    this.callbackOnRecognitionResult = null
     var SpRec = null
     var SpGrm = null
 
@@ -31,53 +49,64 @@ export default class SpeechUtil {
       SpGrm = mozSpeechGrammarList
   //    SpREv = mozSpeechRecognitionEvent
     }
-    var colors = ['aqua', 'azure', 'beige', 'bisque', 'black', 'blue', 'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo', 'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta', 'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid', 'peru', 'pink', 'plum', 'purple', 'red', 'salmon', 'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'white', 'yellow']
-    var grammar = '#JSGF V1.0; grammar colors; public <color> = ' + colors.join(' | ') + ' ;'
+    var words = AdjectiveUtil.getWords()
+    var grammar = '#JSGF V1.0; grammar words; public <words> = ' + words.join(' | ') + ' ;'
     try {
       this.rec = new SpRec()
       var speechRecognitionList = new SpGrm()
       speechRecognitionList.addFromString(grammar, 1)
       this.rec.grammars = speechRecognitionList
-      this.rec.continuous = true
+      this.rec.continuous = false
       this.rec.lang = 'en-US'
       this.rec.interimResults = false
-      this.rec.maxAlternatives = 5
+      this.rec.maxAlternatives = 3
     } catch (e) {
       log.error('SpeechRecognition is not defined. ', e)
       this.rec = {}
     }
 
     this.rec.onresult = function (event) {
-      log.info('onresult' + event)
       var rs = event.results
-      for (var i = 0; i < rs.length; i++) {
-        for (var j = 0; j < rs[i].length; j++) {
-          log.info('You said: [' + i + '][' + j + ']' + rs[i][j].transcript)
-        }
+      if (self.callbackOnRecognitionResult) {
+        self.callbackOnRecognitionResult(createRecognitionResult(rs))
       }
     }
     this.rec.onend = function (event) {
-      log.info('end...' + event)
+      self.isRunnningRecognition = false
+      log.info('end...')
+      if (self.isLoopRequired) {
+        self.isRunnningRecognition = true
+        self.rec.start()
+      } else {
+        self.callbackOnRecognitionResult({
+          status: 'end'
+        })
+      }
     }
     this.rec.onerr = function (event) {
-      log.info('err...' + event)
+      self.callbackOnRecognitionResult({
+        status: 'error'
+      })
     }
     this.rec.onstart = function (event) {
+      self.isRunnningRecognition = true
+      log.info('start...')
     }
   }
 
   stop () {
     this.rec.stop()
-    this.isRunning = false
+    this.isLoopRequired = false
   }
 
-  start () {
+  start (callback) {
+    this.isLoopRequired = true
     this.rec.start()
-    this.isRunning = true
+    this.callbackOnRecognitionResult = callback
   };
 
   toggle () {
-    if (this.isRunning) {
+    if (this.isRunnningRecognition) {
       this.stop()
     } else {
       this.start()

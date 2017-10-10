@@ -10,7 +10,7 @@
       <p class="speech">
         <button type='button' class='btn btn-raised btn-success' v-for="elm in shuffled" @click="addWordSelection(elm)">{{elm.word}}</button>
       </p>
-      <button type='button' v-if="completed" class='btn btn-lg btn-raised btn-primary' @click="nextQuestion" >次の問題</button>
+      <button type='button' v-if="completed" class='btn btn-lg btn-raised btn-primary' @click="nextQuestion" ><i class="fa fa-refresh" aria-hidden="true"></i>次の問題</button>
     </section>
     <hr>
     <section class="answer">
@@ -63,6 +63,12 @@ function createCompleteMessage (result) {
 
 export default {
   name: 'hello',
+  props: {
+    acceptSentenceList: {
+      type: Array,
+      default: []
+    }
+  },
   data: function () {
     let d = AdjectiveUtil.create()
     d.completed = false
@@ -104,12 +110,34 @@ export default {
       })
       this.completed = false
     }
+  },
+  watch: {
+    acceptSentenceList: function (newVal, oldVal) {
+      let self = this
+      if (newVal && newVal.length > 0) {
+        if (newVal.filter(sentence => sentence === 'next question').length > 0) {
+          self.nextQuestion()
+        }
+        newVal.forEach(sentence => {
+          sentence.split(' ').forEach(word => {
+            for (let i = 0; i < self.shuffled.length; i++) {
+              if (self.shuffled[i].word === word) {
+                self.addWordSelection(self.shuffled[i])
+              }
+            }
+          })
+        })
+      }
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+div.alert.alert-success {
+  margin-top: 4px;
+}
 button {
   margin-right: 5px;
 }
