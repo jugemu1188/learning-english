@@ -1,8 +1,11 @@
 # Order of Adjectives in English
-# 英語における形容詞の語順
-
 > It is a page that you can learn word order of adjective.
-> 当サイトにて英語における形容詞の語順を学べます。
+
+# 英語における形容詞の語順
+> 当ウェブページにて英語における形容詞の語順を学べます。
+
+## Demo (デモ)
+https://v157-7-208-254.myvps.jp/learn/adjective_order
 
 ## Build Setup
 
