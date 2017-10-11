@@ -50,14 +50,8 @@
 <script>
 import SpeechUtil from '@/router/speech'
 
-var log = require('loglevel')
-log.setLevel('info')
 export default {
   props: {
-    title: {
-      type: String,
-      default: 'お手本詳細設定'
-    },
     result: {
       isCorrect: {
         type: Boolean

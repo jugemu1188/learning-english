@@ -66,7 +66,8 @@
         </tr>
       </tfoot>
     </table>
-  
+    
+    
   </figure>
 </template>
 
@@ -99,7 +100,7 @@
   .hidden-lgsm {
     display: inline-block;
   }
-  @media screen and (min-width: map-get($breakpoints, lg)) and (max-width: 1120px) {
+  @media screen and (min-width: map-get($breakpoints, lg)) and (max-width: 1140px) {
     .hidden-lgsm {
       display: none;
     }

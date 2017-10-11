@@ -1,24 +1,22 @@
 const numeral = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
-const opinion = ['beautiful', 'unusual', 'lovely']
+const opinion = ['beautiful', 'unusual', 'lovely', 'excellent', 'wonderful', 'elegant', 'cheap']
 const size = {
   big: ['huge', 'big', 'large', 'enormous'],
   small: ['small', 'little', 'slim', 'enormous']
 }
-const shape = ['round', 'square', 'rectangular']
+const shape = ['round', 'square', 'rectangular', 'oval', 'flat']
 const age = {
   animal: ['young', 'old', 'baby'],
   object: ['new', 'old']
 }
 const color = ['black', 'gray', 'blue', 'brown', 'purple', 'red', 'green', 'pink', 'yellow', 'orange']
 const origin = ['German', 'Japanese', 'Turkish', 'American', 'Asian', 'Chadian', 'Colombian']
-const material = ['metal', 'wooden', 'plastic', 'silver', 'gold', 'cotton', 'paper']
+const material = ['metal', 'wooden', 'plastic', 'silver', 'gold', 'cotton', 'paper', 'steel']
 const animal = {
   big: ['elephant', 'bird', 'spider', 'whale', 'hippo', 'giraffe', 'bear'],
   small: ['raccoon', 'bird', 'turtle', 'rabbit', 'frog', 'dove']
 }
-const objects = ['bag', 'Ruck sack', 'Luggage']
-
-const IGNORE_CATEGORIES = ['Determiner', 'Opinion', 'Size', 'Shape', 'Age', 'Color', 'Origin', 'Material']
+const objects = ['bag', 'table', 'skirt', 'car', 'castle', 'dress']
 
 var single
 
@@ -47,20 +45,6 @@ export default class AdjectiveUtil {
 
   static rnd (arr) {
     return arr[Math.floor(Math.random() * arr.length)]
-  }
-
-  ignoreCategory () {
-    let arr = []
-    Object.assign(arr, IGNORE_CATEGORIES)
-    for (var i = 0; i < this.list.length; i++) {
-      for (var j = 0; j < arr.length; j++) {
-        if (this.list[i].category === arr[j]) {
-          arr.splice(j, 1)
-          break
-        }
-      }
-    }
-    return arr
   }
 
   put (category, word) {
@@ -104,6 +88,27 @@ export default class AdjectiveUtil {
     this.put('Noun', AdjectiveUtil.rnd(objects))
   }
 
+  // Some delicious Indian cuisine
+  setPattern02 () {
+    var flg = new Date().getTime() % 2 === 0
+    this.put('Determiner', 'Some')
+    this.put('Opinion', 'delicious')
+    this.put('Origin', flg ? 'Indian' : 'Thai')
+    this.put('Noun', 'cuisine')
+  }
+
+  // a beautiful tall thin young Japanese man
+  setPattern03 () {
+    var flg = new Date().getTime() % 2 === 0
+    this.put('Determiner', 'A')
+    this.put('Opinion', 'beautiful')
+    this.put('Size', 'tall')
+    this.put('Shape', 'thin')
+    this.put('Age', 'young')
+    this.put('Origin', 'Japanese')
+    this.put('Noun', flg ? 'man' : 'woman')
+  }
+
   setTonguetwisters01 () {
     var flg = new Date().getTime() % 2 === 0
     this.put('Determiner', 'A')
@@ -114,7 +119,7 @@ export default class AdjectiveUtil {
 
   static create () {
     single = new AdjectiveUtil()
-    switch (Math.floor(Math.random() * 3)) {
+    switch (Math.floor(Math.random() * 5)) {
       case 0:
         single.setPattern00()
         break
@@ -122,6 +127,12 @@ export default class AdjectiveUtil {
         single.setPattern01()
         break
       case 2:
+        single.setPattern02()
+        break
+      case 3:
+        single.setPattern03()
+        break
+      case 4:
         single.setTonguetwisters01()
         break
     }

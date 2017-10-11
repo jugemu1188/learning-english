@@ -26,7 +26,7 @@ export default class SpeechUtil {
     this.rec = null
     this.isRunnningRecognition = false
     this.isLoopRequired = false
-    this.hasRecognitionResult = false
+    this.numOfEndRecognitionResult = 0
     this.callbackOnRecognitionResult = null
     var SpRec = null
     var SpGrm = null
@@ -75,8 +75,9 @@ export default class SpeechUtil {
     }
     this.rec.onend = function (event) {
       self.isRunnningRecognition = false
-      log.info('end...', self.isLoopRequired, self.hasRecognitionResult)
-      if (self.isLoopRequired && self.hasRecognitionResult) {
+      self.numOfEndRecognitionResult++
+      log.info('end...', self.isLoopRequired)
+      if (self.isLoopRequired && self.numOfEndRecognitionResult < 100) {
         self.isRunnningRecognition = true
         self.rec.start()
       } else {
@@ -95,7 +96,7 @@ export default class SpeechUtil {
       }
     }
     this.rec.onstart = function (event) {
-      this.hasRecognitionResult = false
+      self.numOfEndRecognitionResult = 0
       self.isRunnningRecognition = true
       log.info('start...')
     }
@@ -107,9 +108,15 @@ export default class SpeechUtil {
   }
 
   start (callback) {
-    this.isLoopRequired = true
-    this.rec.start()
-    this.callbackOnRecognitionResult = callback
+    if (this.isAvailableRecognition()) {
+      this.isLoopRequired = true
+      this.rec.start()
+      this.callbackOnRecognitionResult = callback
+    } else {
+      callback({
+        status: 'error'
+      })
+    }
   };
 
   toggle () {
@@ -118,6 +125,10 @@ export default class SpeechUtil {
     } else {
       this.start()
     }
+  }
+
+  isAvailableRecognition () {
+    return this.rec && this.rec.start
   }
 
   speak (msg) {
@@ -134,6 +145,9 @@ export default class SpeechUtil {
   }
 
   static getVoices () {
+    if (!window.speechSynthesis) {
+      return []
+    }
     let arr = window.speechSynthesis.getVoices()
     if (arr) {
       return arr
@@ -142,6 +156,10 @@ export default class SpeechUtil {
   }
 
   static getAsyncVoices (callback) {
+    if (!window.speechSynthesis) {
+      callback([])
+      return
+    }
     let options = {
       sleep: 1000,
       interval: 300
@@ -159,6 +177,9 @@ export default class SpeechUtil {
   }
 
   static getFirstVoice (lang) {
+    if (!window.speechSynthesis) {
+      return null
+    }
     let arr = window.speechSynthesis.getVoices()
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].lang.indexOf(lang) >= 0) {

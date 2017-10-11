@@ -24,8 +24,6 @@
 </template>
 
 <script>
-require('jquery')
-
 import AdjectiveUtil from '@/router/adjective'
 import SpeechUtil from '@/router/speech'
 
@@ -121,7 +119,7 @@ export default {
         newVal.forEach(sentence => {
           sentence.split(' ').forEach(word => {
             for (let i = 0; i < self.shuffled.length; i++) {
-              if (self.shuffled[i].word === word) {
+              if (self.shuffled[i].word.toLowerCase() === word.toLowerCase()) {
                 self.addWordSelection(self.shuffled[i])
               }
             }

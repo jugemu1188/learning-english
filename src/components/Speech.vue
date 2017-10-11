@@ -41,6 +41,7 @@
             <ol class="text-left">
               <li v-for="said in said_list">{{said.confidence}} : {{said.sentence}}</li>
             </ol>
+            <p v-if="availableRecognition" :class="{ 'text-muted': !useSpeechRecognition}">問題を変更する場合は「Next Question!」と喋って下さい</p>
           </div>
         </div>
       </div>
@@ -49,7 +50,6 @@
 </template>
 
 <script>
-require('jquery')
 import SpeechUtil from '@/router/speech'
 
 export default {
@@ -61,12 +61,17 @@ export default {
       voiceShotName: '',
       voiceOptions: [],
       status: '停止状態',
+      availableRecognition: false,
       said_list: []
     }
   },
   mounted: function () {
     var self = this
     SpeechUtil.getAsyncVoices((list) => {
+      self.availableRecognition = SpeechUtil.getInstance().isAvailableRecognition()
+      if (!self.availableRecognition) {
+        self.status = '当ブラウザでは音声認識をご利用できません'
+      }
       if (list) {
         self.voiceOptions.splice(0, self.voiceOptions.length)
         self.voiceShotName = null
@@ -77,8 +82,10 @@ export default {
         if (voice === null) {
           voice = self.voiceOptions[0]
         }
-        self.voiceShotName = SpeechUtil.getShortVoiceName(voice.name, voice.lang)
-        SpeechUtil.getInstance().resetVoice(self.voiceShotName)
+        if (voice) {
+          self.voiceShotName = SpeechUtil.getShortVoiceName(voice.name, voice.lang)
+          SpeechUtil.getInstance().resetVoice(self.voiceShotName)
+        }
       }
     })
   },
@@ -122,7 +129,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .card-body, .card-footer {
   padding: 10px;
