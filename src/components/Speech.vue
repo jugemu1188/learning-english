@@ -99,6 +99,7 @@ export default {
     toggleRecognition: function () {
       let self = this
       if (this.useSpeechRecognition) {
+        self.status = '認識中。正しい語順で発音してください。'
         SpeechUtil.getInstance().start(function (result) {
           if (result.status === 'end') {
             self.status = '停止状態'
