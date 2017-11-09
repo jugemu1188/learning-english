@@ -53,7 +53,7 @@ export default class AdjectiveUtil {
     } else {
       this.list.push({
         category: category,
-        isShowing: true,
+        visible: true,
         word: word
       })
     }

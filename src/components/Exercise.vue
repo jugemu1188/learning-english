@@ -8,15 +8,20 @@
     <hr>
     <section class="question">
       <p class="speech">
-        <button type='button' class='btn btn-raised btn-success' v-for="elm in shuffled" @click="addWordSelection(elm)">{{elm.word}}</button>
+        <transition name="fade" tag="span" v-for="(elm,idx) in shuffled" :key="'sp-' + idx"
+          v-on:before-leave="beforeLeave"
+          v-on:after-leave="afterLeave"
+        >
+          <button type='button' class='btn btn-raised btn-success' v-show="elm.visible" @click="addWordSelection(elm)">{{elm.word}}</button>
+        </transition>
       </p>
       <button type='button' v-if="completed" class='btn btn-lg btn-raised btn-primary' @click="nextQuestion" ><i class="fa fa-refresh" aria-hidden="true"></i>次の問題</button>
     </section>
     <hr>
     <section class="answer">
       <p class="sentence">
-        <button type='button' class='btn btn-raised btn-success' v-for="elm in selectList" @click="removeWordSelection(elm)">{{elm.word}}</button>
-        <button type='button' disabled class='btn btn-warning btn-raised fake' v-for="n in countOfPlaceHolder()">&nbsp;</button>
+        <button type='button' class='btn btn-raised btn-success' v-for="(elm, idx) in selectList" :key="'ans-adj-' + idx" @click="removeWordSelection(elm)">{{elm.word}}</button>
+        <button type='button' disabled class='btn btn-warning btn-raised fake' v-for="(n, idx) in countOfPlaceHolder()" :key="'ans-fake-' + idx">&nbsp;</button>
         <button type='button' disabled class='btn btn-primary btn-raised '>{{noun}}</button>
       </p>
     </section>
@@ -77,21 +82,14 @@ export default {
       return this.list.length - this.selectList.length
     },
     addWordSelection: function (obj) {
-      this.selectList.push(obj)
       for (let i = 0; i < this.shuffled.length; i++) {
         if (this.shuffled[i].word === obj.word) {
-          this.shuffled.splice(i, 1)
+          // this.shuffled.splice(i, 1)
+          // move to afterLeave()
+          this.shuffled[i].visible = false
         }
       }
-      if (this.shuffled.length <= 0) {
-        let result = createCompleteMessage(this)
-        SpeechUtil.getInstance().speak(result.isCorrect ? 'Correct!' : 'Incorrect!')
-        SpeechUtil.getInstance().speak(result.correctSentence)
-        this.completed = true
-        this.$emit('completed', result)
-      } else {
-        SpeechUtil.getInstance().speak(obj.word)
-      }
+      SpeechUtil.getInstance().speak(obj.word)
     },
     removeWordSelection: function (obj) {
       this.shuffled.push(obj)
@@ -107,6 +105,35 @@ export default {
         this[name] = nextQuestion[name]
       })
       this.completed = false
+    },
+    beforeLeave: function (el) {
+      Array.prototype.forEach.call(document.querySelectorAll('p.speech > button'), elm => {
+        elm.setAttribute('disabled', true)
+      })
+    },
+    afterLeave: function (el) {
+      const selWord = el.innerText.toLowerCase()
+      const selObj = this.shuffled.filter(a => {
+        return a.word.toLowerCase() === selWord
+      })[0]
+      for (let i = 0; i < this.shuffled.length; i++) {
+        if (this.shuffled[i].word.toLowerCase() === selWord) {
+          this.shuffled[i].visible = true
+          this.shuffled.splice(i, 1)
+          break
+        }
+      }
+      this.selectList.push(selObj)
+      Array.prototype.forEach.call(document.querySelectorAll('p.speech > button'), elm => {
+        elm.removeAttribute('disabled')
+      })
+      if (this.shuffled.length <= 0) {
+        let result = createCompleteMessage(this)
+        SpeechUtil.getInstance().speak(result.isCorrect ? 'Correct!' : 'Incorrect!')
+        SpeechUtil.getInstance().speak(result.correctSentence)
+        this.completed = true
+        this.$emit('completed', result)
+      }
     }
   },
   watch: {
@@ -148,5 +175,13 @@ button {
       cursor: not-allowed;
     }
   }
+}
+
+.fade-leave-active {
+  transition: opacity .6s
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(70px);
 }
 </style>
