@@ -8,51 +8,51 @@
           <td>種類</td>
           <td>例</td>
         </tr>
+        <tr class='Determiner warning'>
+          <td>-</td>
+          <td>限定詞（determiner）</td>
+          <td>a, my, this, first, seven</td>
+        </tr>
       </thead>
       <tbody>
-        <tr class='Determiner warning'>
-          <td>1</td>
-          <td>限定詞（determiner）</td>
-          <td>a, my, this, first</td>
-        </tr>
         <tr class='Opinion'>
-          <td>2</td>
+          <td>1</td>
           <td>意見・感想<span class='hidden-lgsm'>・評価</span> （
             <span class='prefix text-danger'>op</span>inion）</td>
           <td>lovely, beautiful</td>
         </tr>
         <tr class='Size'>
-          <td>3</td>
+          <td>2</td>
           <td>大きさ（
             <span class='prefix text-danger'>s</span>ize）</td>
           <td>big, small, tall</td>
         </tr>
         <tr class='Shape'>
-          <td>4</td>
+          <td>3</td>
           <td>形（
             <span class='prefix text-danger'>sh</span>ape）</td>
           <td>triangular, square</td>
         </tr>
         <tr class='Age'>
-          <td>5</td>
+          <td>4</td>
           <td>新しさ・古さ（
             <span class='prefix text-danger'>a</span>ge）</td>
           <td>young, old, new</td>
         </tr>
         <tr class='Color'>
-          <td>6</td>
+          <td>5</td>
           <td>色（
             <span class='prefix text-danger'>c</span>olor）</td>
           <td>blue, white, yellow, black</td>
         </tr>
         <tr class='Origin'>
-          <td>7</td>
+          <td>6</td>
           <td>所属（
             <span class='prefix text-danger'>o</span>rigin）</td>
           <td>Japanese, European<span class='hidden-lgsm'>, Buddhist</span></td>
         </tr>
         <tr class='Material'>
-          <td>8</td>
+          <td>7</td>
           <td>素材（
             <span class='prefix text-danger'>m</span>aterials）</td>
           <td>silk, cotton, leather</td>

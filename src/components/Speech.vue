@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import SpeechUtil from '@/router/speech'
+import SpeechUtil from '@/speech'
 
 export default {
   name: 'hello',

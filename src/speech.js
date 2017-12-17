@@ -1,4 +1,5 @@
-import AdjectiveUtil from './adjective'
+import QuestionGenerator from './QuestionGenerator'
+
 let sleep = require('sleep-async/sleep-async')()
 var log = require('loglevel')
 log.setLevel('info')
@@ -50,7 +51,7 @@ export default class SpeechUtil {
       SpGrm = mozSpeechGrammarList
   //    SpREv = mozSpeechRecognitionEvent
     }
-    var words = AdjectiveUtil.getWords()
+    var words = QuestionGenerator.getWords()
     var grammar = '#JSGF V1.0; grammar words; public <words> = ' + words.join(' | ') + ' ;'
     try {
       this.rec = new SpRec()

@@ -15,6 +15,10 @@
               <button type='button' class='btn btn-raised btn-default' @click="playCorrectAnswer">再生</button>
             </h3>
             <p class="correct answer">
+              <ruby>
+                {{result.determiner + ' '}}
+                <rt>Determiner</rt>
+              </ruby>
               <ruby v-for="w in result.correctWords">
                 {{w.word + ' '}}
                 <rt>{{w.category}}</rt>
@@ -31,6 +35,7 @@
               <button type='button' class='btn btn-raised btn-default' @click="playYourAnswer">再生</button>
             </h3>
             <p class="your answer">
+              <span>{{result.determiner + ' '}}</span>
               <span v-for="w in result.yourWords" :class="{ 'text-danger': w.wrong }">{{w.word + ' '}}</span>
               <span>{{result.noun}}.</span>
             </p>
@@ -48,7 +53,7 @@
 </template>
 
 <script>
-import SpeechUtil from '@/router/speech'
+import SpeechUtil from '@/speech'
 
 export default {
   props: {

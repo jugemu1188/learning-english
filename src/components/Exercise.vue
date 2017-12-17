@@ -8,7 +8,7 @@
     <hr>
     <section class="question">
       <p class="speech">
-        <transition name="fade" tag="span" v-for="(elm,idx) in shuffled" :key="'sp-' + idx"
+        <transition name="fade" tag="span" v-for="(elm,idx) in shuffledList" :key="'sp-' + idx"
           v-on:before-leave="beforeLeave"
           v-on:after-leave="afterLeave"
         >
@@ -20,6 +20,7 @@
     <hr>
     <section class="answer">
       <p class="sentence">
+        <button type='button' disabled class='btn btn-primary btn-raised '>{{determiner}}</button>
         <button type='button' class='btn btn-raised btn-success' v-for="(elm, idx) in selectList" :key="'ans-adj-' + idx" @click="removeWordSelection(elm)">{{elm.word}}</button>
         <button type='button' disabled class='btn btn-warning btn-raised fake' v-for="(n, idx) in countOfPlaceHolder()" :key="'ans-fake-' + idx">&nbsp;</button>
         <button type='button' disabled class='btn btn-primary btn-raised '>{{noun}}</button>
@@ -29,8 +30,8 @@
 </template>
 
 <script>
-import AdjectiveUtil from '@/router/adjective'
-import SpeechUtil from '@/router/speech'
+import QuestionGenerator from '@/QuestionGenerator'
+import SpeechUtil from '@/speech'
 
 function createCompleteMessage (result) {
   let ret = {
@@ -38,10 +39,15 @@ function createCompleteMessage (result) {
     correctWords: [],
     yourWords: [],
     correctSentence: '',
+    determiner: '',
     noun: ''
   }
+  if (result.determiner) {
+    ret.determiner = result.determiner
+    ret.correctSentence = result.determiner + ' '
+  }
   result.selectList.forEach((elm, idx) => {
-    let correctElm = result.list[idx]
+    let correctElm = result.adjectiveList[idx]
     let o = {
       word: elm.word,
       wrong: false
@@ -52,7 +58,7 @@ function createCompleteMessage (result) {
     }
     ret.yourWords.push(o)
   })
-  result.list.forEach((elm, idx) => {
+  result.adjectiveList.forEach((elm, idx) => {
     ret.correctWords.push({
       word: elm.word,
       category: elm.category
@@ -73,26 +79,26 @@ export default {
     }
   },
   data: function () {
-    let d = AdjectiveUtil.create()
+    let d = QuestionGenerator.create()
     d.completed = false
     return d
   },
   methods: {
     countOfPlaceHolder: function () {
-      return this.list.length - this.selectList.length
+      return this.adjectiveList.length - this.selectList.length
     },
     addWordSelection: function (obj) {
-      for (let i = 0; i < this.shuffled.length; i++) {
-        if (this.shuffled[i].word === obj.word) {
+      for (let i = 0; i < this.shuffledList.length; i++) {
+        if (this.shuffledList[i].word === obj.word) {
           // this.shuffled.splice(i, 1)
           // move to afterLeave()
-          this.shuffled[i].visible = false
+          this.shuffledList[i].visible = false
         }
       }
       SpeechUtil.getInstance().speak(obj.word)
     },
     removeWordSelection: function (obj) {
-      this.shuffled.push(obj)
+      this.shuffledList.push(obj)
       for (let i = 0; i < this.selectList.length; i++) {
         if (this.selectList[i].word === obj.word) {
           this.selectList.splice(i, 1)
@@ -100,7 +106,7 @@ export default {
       }
     },
     nextQuestion: function () {
-      let nextQuestion = AdjectiveUtil.create()
+      let nextQuestion = QuestionGenerator.create()
       Object.keys(nextQuestion).forEach(name => {
         this[name] = nextQuestion[name]
       })
@@ -113,13 +119,13 @@ export default {
     },
     afterLeave: function (el) {
       const selWord = el.innerText.toLowerCase()
-      const selObj = this.shuffled.filter(a => {
+      const selObj = this.shuffledList.filter(a => {
         return a.word.toLowerCase() === selWord
       })[0]
-      for (let i = 0; i < this.shuffled.length; i++) {
-        if (this.shuffled[i].word.toLowerCase() === selWord) {
-          this.shuffled[i].visible = true
-          this.shuffled.splice(i, 1)
+      for (let i = 0; i < this.shuffledList.length; i++) {
+        if (this.shuffledList[i].word.toLowerCase() === selWord) {
+          this.shuffledList[i].visible = true
+          this.shuffledList.splice(i, 1)
           break
         }
       }
@@ -127,7 +133,7 @@ export default {
       Array.prototype.forEach.call(document.querySelectorAll('p.speech > button'), elm => {
         elm.removeAttribute('disabled')
       })
-      if (this.shuffled.length <= 0) {
+      if (this.shuffledList.length <= 0) {
         let result = createCompleteMessage(this)
         SpeechUtil.getInstance().speak(result.isCorrect ? 'Correct!' : 'Incorrect!')
         SpeechUtil.getInstance().speak(result.correctSentence)
@@ -145,9 +151,9 @@ export default {
         }
         newVal.forEach(sentence => {
           sentence.split(' ').forEach(word => {
-            for (let i = 0; i < self.shuffled.length; i++) {
-              if (self.shuffled[i].word.toLowerCase() === word.toLowerCase()) {
-                self.addWordSelection(self.shuffled[i])
+            for (let i = 0; i < self.shuffledList.length; i++) {
+              if (self.shuffledList[i].word.toLowerCase() === word.toLowerCase()) {
+                self.addWordSelection(self.shuffledList[i])
               }
             }
           })
