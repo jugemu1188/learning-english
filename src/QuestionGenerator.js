@@ -12,7 +12,7 @@ const age = {
   object: ['new', 'old']
 }
 const color = ['black', 'gray', 'blue', 'brown', 'purple', 'red', 'green', 'pink', 'yellow', 'orange']
-const origin = ['German', 'Japanese', 'Turkish', 'American', 'Asian', 'Chadian', 'Colombian']
+const origin = ['German', 'Japanese', 'Turkish', 'American', 'Asian', 'Canadian', 'Colombian']
 const material = ['metal', 'wooden', 'plastic', 'silver', 'gold', 'cotton', 'paper', 'steel']
 const animal = {
   big: ['elephant', 'bird', 'spider', 'whale', 'hippo', 'giraffe', 'bear'],
@@ -95,9 +95,24 @@ export default class QuestionGenerator {
       undefined, // Shape
       'young', // Age
       undefined, // Color
-      'Japanese', // Origin
+      QuestionGenerator.rnd(origin), // Origin
       undefined, // Material
       flg ? 'man' : 'woman' // Noun
+    )
+  }
+
+  // a wonderful old Italian clock
+  static setPattern04 () {
+    return new Question(
+      'A', // Determiner
+      'wonderful', // Opinion
+      undefined, // Size
+      undefined, // Shape
+      QuestionGenerator.rnd(age.object), // Age
+      undefined, // Color
+      QuestionGenerator.rnd(origin), // Origin
+      undefined, // Material
+      'clock' // Noun
     )
   }
 
@@ -140,6 +155,7 @@ export default class QuestionGenerator {
     patternList.push(QuestionGenerator.setPattern01)
     patternList.push(QuestionGenerator.setPattern02)
     patternList.push(QuestionGenerator.setPattern03)
+    patternList.push(QuestionGenerator.setPattern04)
     patternList.push(QuestionGenerator.setTonguetwisters01)
     return QuestionGenerator.rnd(patternList)()
   }
