@@ -9,7 +9,7 @@
           </div>
           <div class="col-8 text-left">
             <select class="custom-select" id='reader' v-model="voiceShotName" @change="resetVoice">
-              <option v-for="option in voiceOptions" v-bind:value="getShortVoiceName(option.name, option.lang)" >{{  option.name  }}</option>
+              <option v-for="(option, idx) in voiceOptions" v-bind:value="getShortVoiceName(option.name, option.lang)" :key="idx" >{{  option.name  }}</option>
               <option value='' >読み上げない</option>
             </select>
           </div>
@@ -39,7 +39,7 @@
           <div class="col-8  text-left">
             <p :class="{ 'text-muted': !useSpeechRecognition}">{{status}}</p>
             <ol class="text-left">
-              <li v-for="said in said_list">{{said.confidence}} : {{said.sentence}}</li>
+              <li v-for="(said, idx) in said_list" :key="idx">{{said.confidence}} : {{said.sentence}}</li>
             </ol>
             <p v-if="availableRecognition" :class="{ 'text-muted': !useSpeechRecognition}">問題を変更する場合は「Next Question!」と喋って下さい</p>
           </div>
@@ -70,7 +70,7 @@ export default {
     SpeechUtil.getAsyncVoices((list) => {
       self.availableRecognition = SpeechUtil.getInstance().isAvailableRecognition()
       if (!self.availableRecognition) {
-        self.status = '当ブラウザでは音声認識をご利用できません'
+        self.status = '当ブラウザでは音声認識をご利用できません。Chromeブラウザをご利用ください'
       }
       if (list) {
         self.voiceOptions.splice(0, self.voiceOptions.length)
