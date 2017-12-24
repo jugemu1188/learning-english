@@ -15,11 +15,11 @@
   },
   "dependencies": {
     "animejs": "^2.0.2",
-    "bootstrap-material-design": "^4.0.0-beta.3",
+    "bootstrap-material-design": "4.0.0-beta.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "loglevel": "^1.5.0",
-    "popper.js": "^1.12.5",
+    "popper.js": "1.12.6",
     "sleep-async": "^1.0.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0"

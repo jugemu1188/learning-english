@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
 
     <div class="jumbotron">
       <h1 class="display-3"><ruby>形容詞<rt>Adjective</rt></ruby></h1>

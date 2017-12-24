@@ -19,7 +19,7 @@
                 {{result.determiner + ' '}}
                 <rt>Determiner</rt>
               </ruby>
-              <ruby v-for="w in result.correctWords">
+              <ruby v-for="(w, idx) in result.correctWords" :key="idx">
                 {{w.word + ' '}}
                 <rt>{{w.category}}</rt>
               </ruby>
@@ -36,7 +36,7 @@
             </h3>
             <p class="your answer">
               <span>{{result.determiner + ' '}}</span>
-              <span v-for="w in result.yourWords" :class="{ 'text-danger': w.wrong }">{{w.word + ' '}}</span>
+              <span v-for="(w, idx2) in result.yourWords" :class="{ 'text-danger': w.wrong }" :key="idx2">{{w.word + ' '}}</span>
               <span>{{result.noun}}.</span>
             </p>
           </section>

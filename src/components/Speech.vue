@@ -23,7 +23,7 @@
           </div>
           <div class="col-8  text-left">
             <label class="custom-control custom-checkbox">
-              <input type="checkbox" name='recognition' class="custom-control-input" v-model="useSpeechRecognition" @click="toggleRecognition">
+              <input type="checkbox" name='recognition' class="custom-control-input" v-model="useSpeechRecognition" @change="toggleRecognition">
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description" :class="{ 'text-muted': !useSpeechRecognition}">
                 <i class="fa fa-microphone" aria-hidden="true"></i>利用する
@@ -39,7 +39,7 @@
           <div class="col-8  text-left">
             <p :class="{ 'text-muted': !useSpeechRecognition}">{{status}}</p>
             <ol class="text-left">
-              <li v-for="(said, idx) in said_list" :key="idx">{{said.confidence}} : {{said.sentence}}</li>
+              <li v-for="(said, idx2) in said_list" :key="idx2" >{{said.confidence}} : {{said.sentence}}</li>
             </ol>
             <p v-if="availableRecognition" :class="{ 'text-muted': !useSpeechRecognition}">問題を変更する場合は「Next Question!」と喋って下さい</p>
           </div>
