@@ -5,7 +5,7 @@
 > 当ウェブページにて英語における形容詞の語順を学べます。
 
 ## Demo (デモ)
-https://v157-7-208-254.myvps.jp/learn/adjective_order
+https://github.com/l-v-yonsama/learning-english
 
 ## Build Setup
 
